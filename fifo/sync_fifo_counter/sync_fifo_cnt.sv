@@ -3,18 +3,18 @@
 //计数器法实现同步FIFO
 module	sync_fifo_cnt
 #(
-    parameter   DATA_WIDTH = 'd8  ,							//FIFO位宽
-    parameter   DATA_DEPTH = 'd16 							//FIFO深度
+    parameter   DATA_WIDTH = 'd8                    ,       //FIFO位宽
+    parameter   DATA_DEPTH = 'd16                           //FIFO深度
 )
 (
-    input                                   clk		,		//系统时钟
+    input                                   clk		,       //系统时钟
     input                                   rst_n	,       //低电平有效的复位信号
     input   [DATA_WIDTH-1:0]                data_in	,       //写入的数据
     input                                   rd_en	,       //读使能信号，高电平有效
     input                                   wr_en	,       //写使能信号，高电平有效
 															
-    output  reg [DATA_WIDTH-1:0]            data_out,	    //输出的数据
-    output                                  empty	,	    //空标志，高电平表示当前FIFO已被写满
+    output  reg [DATA_WIDTH-1:0]            data_out,       //输出的数据
+    output                                  empty	,       //空标志，高电平表示当前FIFO已被写满
     output                                  full	,       //满标志，高电平表示当前FIFO已被读空
     output  reg [$clog2(DATA_DEPTH) : 0]    fifo_cnt		//$clog2是以2为底取对数	
 
