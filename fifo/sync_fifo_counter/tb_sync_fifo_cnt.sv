@@ -6,16 +6,16 @@ module tb_sync_fifo_cnt();
     parameter   DATA_WIDTH = 8  ;			//FIFO位宽
     parameter   DATA_DEPTH = 8 ;			//FIFO深度
     
-    reg									clk     ;
-    reg									rst_n   ;
-    reg		[DATA_WIDTH-1:0]			data_in ;
-    reg									rd_en   ;
-    reg									wr_en   ;
+    reg                                 clk     ;
+    reg	                                rst_n   ;
+    reg     [DATA_WIDTH-1:0]            data_in ;
+    reg	                                rd_en   ;
+    reg                                 wr_en   ;
                             
-    wire	[DATA_WIDTH-1:0]			data_out;	
-    wire								empty   ;	
-    wire								full    ;
-    wire	[$clog2(DATA_DEPTH) : 0]    fifo_cnt;
+    wire    [DATA_WIDTH-1:0]            data_out;	
+    wire                                empty   ;	
+    wire                                full    ;
+    wire    [$clog2(DATA_DEPTH) : 0]    fifo_cnt;
     
     
     //------------<例化被测试模块>----------------------------------------

@@ -2,20 +2,20 @@
  
 //------------<模块及端口声明>----------------------------------------
 module tb_sync_fifo_ptr();
-    
     parameter   DATA_WIDTH = 8  ;			//FIFO位宽
     parameter   DATA_DEPTH = 8 ;			//FIFO深度
     
-    reg									clk		;
-    reg									rst_n	;
-    reg		[DATA_WIDTH-1:0]			data_in	;
-    reg									rd_en	;
-    reg									wr_en	;
+    reg                                 clk     ;
+    reg	                                rst_n   ;
+    reg     [DATA_WIDTH-1:0]            data_in ;
+    reg	                                rd_en   ;
+    reg                                 wr_en   ;
                             
-    wire	[DATA_WIDTH-1:0]			data_out;	
-    wire								empty	;	
-    wire								full	;
+    wire    [DATA_WIDTH-1:0]            data_out;	
+    wire                                empty   ;	
+    wire                                full    ;
 
+    
     
     
     //------------<例化被测试模块>----------------------------------------
