@@ -3,7 +3,7 @@
 //计数器法实现同步FIFO
 module	sync_fifo_cnt
 #(
-	parameter   DATA_WIDTH = 'd8  ,							//FIFO位宽
+    parameter   DATA_WIDTH = 'd8  ,							//FIFO位宽
     parameter   DATA_DEPTH = 'd16 							//FIFO深度
 )
 (
@@ -22,19 +22,34 @@ module	sync_fifo_cnt
 
     //reg define
     reg [DATA_WIDTH - 1 : 0] fifo_ram [DATA_DEPTH - 1 : 0];	//用二维数组实现RAM	
+    reg [$clog2(DATA_DEPTH) - 1 : 0]    wr_addr, rd_addr  ;
+
+    always_ff@(posedge clk or negedge rst_n) begin
+        if(!rst_n)begin
+            wr_addr <= 'b0;
+        end else if(wr_en & !full) begin
+            fifo_ram[wr_addr] <= data_in;
+            wr_addr <= wr_addr + 1;
+        end 
+    end
+
+    always_ff@(posedge clk or negedge rst_n) begin
+        if(!rst_n)begin  
+            rd_addr <= 'b0;
+        end else if(rd_en & !empty ) begin
+            data_out <= fifo_ram[rd_addr];
+            rd_addr  <= rd_addr + 1;
+        end 
+    end
 
     always_ff@(posedge clk or negedge rst_n) begin
         if(!rst_n)begin
             fifo_cnt <= 'b0;
-            data_out <= 'b0;
         end else if(wr_en & !full & !rd_en) begin
-            fifo_ram[fifo_cnt] <= data_in;
             fifo_cnt <= fifo_cnt + 1;
         end else if(rd_en & !empty & !wr_en) begin
-            data_out <= fifo_ram[fifo_cnt-1];
             fifo_cnt <= fifo_cnt - 1;
-        end else if(rd_en & wr_en) begin
-            data_out <= data_in;
+        end else if(rd_en & wr_en) begin;
             fifo_cnt <= fifo_cnt;
         end 
     end

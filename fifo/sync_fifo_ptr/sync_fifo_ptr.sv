@@ -1,9 +1,9 @@
 
 `timescale 1ns/1ns	//时间单位/精度
-//计数器法实现同步FIFO
-module	sync_fifo
+
+module	sync_fifo_ptr
 #(
-	parameter   DATA_WIDTH = 'd8  ,							//FIFO位宽
+    parameter   DATA_WIDTH = 'd8  ,							//FIFO位宽
     parameter   DATA_DEPTH = 'd16 							//FIFO深度
 )
 (
@@ -15,30 +15,38 @@ module	sync_fifo
 															
     output  reg [DATA_WIDTH-1:0]            data_out,	    //输出的数据
     output                                  empty	,	    //空标志，高电平表示当前FIFO已被写满
-    output                                  full	,       //满标志，高电平表示当前FIFO已被读空
-    output  reg [$clog2(DATA_DEPTH) : 0]    fifo_cnt		//$clog2是以2为底取对数	
+    output                                  full	       //满标志，高电平表示当前FIFO已被读空
+ 
 
 );
 
     //reg define
-    reg [DATA_WIDTH - 1 : 0] fifo_ram [DATA_DEPTH - 1 : 0];	//用二维数组实现RAM	
+    reg [DATA_WIDTH - 1 : 0] fifo_ram   [DATA_DEPTH - 1 : 0]        ;  //用二维数组实现RAM	
+    reg [$clog2(DATA_DEPTH)   : 0]    wr_ptr, rd_ptr	            ;  //地址指针，位宽多一位
+    reg [$clog2(DATA_DEPTH) -1: 0]    wr_ptr_true, rd_ptr_true	    ;  //地址指针，位宽多一位
+    reg wr_ptr_msb, rd_ptr_msb	; //地址指针，位宽多一位
+
+    assign {wr_ptr_msb, wr_ptr_true} = wr_ptr;
+    assign {rd_ptr_msb, rd_ptr_true} = rd_ptr;
 
     always_ff@(posedge clk or negedge rst_n) begin
         if(!rst_n)begin
-            fifo_cnt <= 'b0;
-            data_out <= 'b0;
-        end else if(wr_en & !full & !rd_en) begin
-            fifo_ram[fifo_cnt] <= data_in;
-            fifo_cnt <= fifo_cnt + 1;
-        end else if(rd_en & !empty & !wr_en) begin
-            data_out <= fifo_ram[fifo_cnt-1];
-            fifo_cnt <= fifo_cnt - 1;
-        end else if(rd_en & wr_en) begin
-            data_out <= data_in;
-            fifo_cnt <= fifo_cnt;
+            wr_ptr      <= 'b0;
+        end else if(wr_en && !full) begin
+            fifo_ram[wr_ptr_true] <= data_in;
+            wr_ptr <= wr_ptr + 1;
+        end
+    end
+
+    always_ff@(posedge clk or negedge rst_n) begin
+        if(!rst_n)begin
+            rd_ptr      <= 'b0;
+        end else if(rd_en && !empty) begin
+            data_out <= fifo_ram[rd_ptr_true];
+            rd_ptr <= rd_ptr + 1;
         end 
     end
 
-    assign full = fifo_cnt == DATA_DEPTH;
-    assign empty = fifo_cnt == 0;
+    assign full = (wr_ptr_true == rd_ptr_true) && ( wr_ptr_msb !=  rd_ptr_msb);
+    assign empty = (wr_ptr == rd_ptr) ;
 endmodule

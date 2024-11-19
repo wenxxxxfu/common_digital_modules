@@ -1,7 +1,7 @@
 `timescale 1ns/1ns	//时间单位/精度
  
 //------------<模块及端口声明>----------------------------------------
-module tb_sync_fifo();
+module tb_sync_fifo_ptr();
     
     parameter   DATA_WIDTH = 8  ;			//FIFO位宽
     parameter   DATA_DEPTH = 8 ;			//FIFO深度
@@ -15,11 +15,11 @@ module tb_sync_fifo();
     wire	[DATA_WIDTH-1:0]			data_out;	
     wire								empty	;	
     wire								full	;
-    wire	[$clog2(DATA_DEPTH) : 0]	fifo_cnt;
+
     
     
     //------------<例化被测试模块>----------------------------------------
-    sync_fifo
+    sync_fifo_ptr
     #(
         .DATA_WIDTH	(DATA_WIDTH),			//FIFO位宽
         .DATA_DEPTH	(DATA_DEPTH)			//FIFO深度
@@ -33,8 +33,8 @@ module tb_sync_fifo();
                     
         .data_out	(data_out	),	
         .empty		(empty		),	
-        .full		(full		),
-        .fifo_cnt	(fifo_cnt	)			
+        .full		(full		)
+		
     );
  
     //------------<设置初始测试条件>----------------------------------------
