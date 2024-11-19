@@ -9,7 +9,7 @@ module	sync_fifo
 (
     input                                   clk		,		//系统时钟
     input                                   rst_n	,       //低电平有效的复位信号
-    input	[DATA_WIDTH-1:0]                data_in	,       //写入的数据
+    input   [DATA_WIDTH-1:0]                data_in	,       //写入的数据
     input                                   rd_en	,       //读使能信号，高电平有效
     input                                   wr_en	,       //写使能信号，高电平有效
 															
