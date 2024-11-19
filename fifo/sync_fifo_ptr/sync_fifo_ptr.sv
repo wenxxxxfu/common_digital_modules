@@ -15,7 +15,7 @@ module	sync_fifo_ptr
 															
     output  reg [DATA_WIDTH-1:0]            data_out,       //输出的数据
     output                                  empty	,       //空标志，高电平表示当前FIFO已被写满
-    output                                  ful             //满标志，高电平表示当前FIFO已被读空
+    output                                  full            //满标志，高电平表示当前FIFO已被读空
  
 
 );
