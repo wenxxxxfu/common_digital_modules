@@ -16,7 +16,7 @@ module	sync_fifo_cnt
     output  reg [DATA_WIDTH-1:0]            data_out,       //输出的数据
     output                                  empty   ,       //空标志，高电平表示当前FIFO已被写满
     output                                  full    ,       //满标志，高电平表示当前FIFO已被读空
-    output  reg [$clog2(DATA_DEPTH) : 0]    fifo_cnt		    //$clog2是以2为底取对数	
+    output  reg [$clog2(DATA_DEPTH) : 0]    fifo_cnt		//$clog2是以2为底取对数	
 
 );
 
