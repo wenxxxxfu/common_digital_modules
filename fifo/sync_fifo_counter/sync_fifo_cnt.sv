@@ -1,7 +1,7 @@
 
 `timescale 1ns/1ns	//时间单位/精度
 //计数器法实现同步FIFO
-module	sync_fifo
+module	sync_fifo_cnt
 #(
 	parameter   DATA_WIDTH = 'd8  ,							//FIFO位宽
     parameter   DATA_DEPTH = 'd16 							//FIFO深度
